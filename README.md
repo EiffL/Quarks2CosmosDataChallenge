@@ -1,2 +1,2 @@
-# Quasar2CosmosDataChallenge
-Material for the CMU Quasar2Cosmos Conference Data Challenges
+# Quarks2Cosmos Data Challenge
+Material for the CMU Quarks2Cosmos Conference Data Challenges
