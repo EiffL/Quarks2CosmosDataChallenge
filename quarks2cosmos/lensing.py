@@ -8,6 +8,8 @@ import jax.numpy as np
 import jax
 from jax import random
 
+import numpy as onp
+
 def ks93(g1, g2):
     """Direct inversion of weak-lensing shear to convergence.
     This function is an implementation of the Kaiser & Squires (1993) mass
@@ -118,16 +120,60 @@ def ks93inv(kE, kB):
 
     return g1, g2
 
-if __name__=='__main__':
 
-    key = random.PRNGKey(0)
+def make_power_map(power_spectrum, size, pixel_size, ell=False, kps=None, zero_freq_val=1e7):
+  # from ell to k
+  if ell:
+    ell = onp.array(power_spectrum[0,:])
+    ps_halofit = onp.array(power_spectrum[1,:] / pixel_size**2)
+    kell = ell /2/onp.pi * 360 * pixel_size / size
+  
+  kps = kell
+  power_spectrum = ps_halofit
 
-    # (g1, g2) should in practice be measurements from a real galaxy survey
-    g1, g2 = 0.1 * random.normal(key, (2, 32, 32)) + 0.1 * np.ones((2, 32, 32))
-    #g1, g2 = 0.1 * np.random.randn(2, 32, 32) + 0.1 * np.ones((2, 32, 32))
-    kE, kB = ks93(g1, g2)
-    print(np.mean(kE))
+  #Ok we need to make a map of the power spectrum in Fourier space
+  k1 = onp.fft.fftfreq(size)
+  k2 = onp.fft.fftfreq(size)
+  kcoords = onp.meshgrid(k1,k2)
+  # Now we can compute the k vector
+  k = onp.sqrt(kcoords[0]**2 + kcoords[1]**2)
+  if kps is None:
+    kps = onp.linspace(0,0.5,len(power_spectrum))
+  # And we can interpolate the PS at these positions
+  ps_map = onp.interp(k.flatten(), kps, power_spectrum).reshape([size,size])
+  ps_map = ps_map
+  ps_map[0,0] = zero_freq_val
+  return ps_map # Carefull, this is not fftshifted
 
-    # Computing shear from convergence
-    gamma1, gamma2 = ks93inv(kE, kB)
-    print('gamma1.shape', gamma1.shape)
+def radial_profile(data):
+  """
+  Compute the radial profile of 2d image
+  :param data: 2d image
+  :return: radial profile
+  """
+  center = data.shape[0]/2
+  y, x = onp.indices((data.shape))
+  r = onp.sqrt((x - center)**2 + (y - center)**2)
+  r = r.astype('int32')
+
+  tbin = onp.bincount(r.ravel(), data.ravel())
+  nr = onp.bincount(r.ravel())
+  radialprofile = tbin / nr
+  return radialprofile
+
+def measure_power_spectrum(map_data, pixel_size):
+  """
+  measures power 2d data
+  :param power: map (nxn)
+  :param pixel_size: pixel_size (rad/pixel)
+  :return: ell
+  :return: power spectrum
+  
+  """
+  data_ft = onp.fft.fftshift(onp.fft.fft2(map_data)) / map_data.shape[0]
+  nyquist = onp.int(map_data.shape[0]/2)
+  power_spectrum_1d =  radial_profile(onp.real(data_ft*onp.conj(data_ft)))[:nyquist] * (pixel_size)**2
+  k = onp.arange(power_spectrum_1d.shape[0])
+  ell = 2. * onp.pi * k / pixel_size / 360
+  return ell, power_spectrum_1d
+
