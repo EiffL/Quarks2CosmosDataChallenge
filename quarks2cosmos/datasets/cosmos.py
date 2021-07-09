@@ -13,7 +13,8 @@ _DESCRIPTION = """
 class CosmosConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Cosmos."""
 
-  def __init__(self, *, sample="23.5", stamp_size=101, pixel_scale=0.03, **kwargs):
+  def __init__(self, *, sample="23.5", stamp_size=101, pixel_scale=0.03,
+               effective_psf=True, **kwargs):
     """BuilderConfig for Cosmos.
     Args:
       sample: which Cosmos sample to use, "23.5" or "25.2".
@@ -30,6 +31,7 @@ class CosmosConfig(tfds.core.BuilderConfig):
     self.stamp_size = stamp_size
     self.pixel_scale = pixel_scale
     self.sample = sample
+    self.effective_psf = effective_psf
 
 
 class Cosmos(tfds.core.GeneratorBasedBuilder):
@@ -40,8 +42,8 @@ class Cosmos(tfds.core.GeneratorBasedBuilder):
       '0.0.1': 'Initial release.',
   }
   
-  BUILDER_CONFIGS = [CosmosConfig(name="Cosmos_23.5", sample="23.5"),
-                     CosmosConfig(name="Cosmos_25.2", sample="25.2")]
+  BUILDER_CONFIGS = [CosmosConfig(name="23.5", sample="23.5"),
+                     CosmosConfig(name="25.2", sample="25.2")]
 
   def _info(self) -> tfds.core.DatasetInfo:
     """Returns the dataset metadata."""
@@ -86,12 +88,30 @@ class Cosmos(tfds.core.GeneratorBasedBuilder):
     """Yields examples."""
     # Loads the galsim COSMOS catalog
     cat = gs.COSMOSCatalog(sample=self.builder_config.sample)
-    ngal = size #cat.getNObjects()
+    ngal = size 
 
-    #yield 'key', {}
+    # Build a model for an effective psf by averaging out several HST PSFs
+    if self.builder_config.effective_psf:
+      psfs = []
+      for i in range(1000):
+        psf = cat.makeGalaxy(i).original_psf
+        psf = psf.rotate(np.random.rand()*360*gs.degrees)
+        psf_stamp = np.abs(psf.drawKImage(nx=self.builder_config.stamp_size, 
+                                          ny=self.builder_config.stamp_size, 
+                                          scale=2*np.pi/(self.builder_config.stamp_size*0.03)).array).astype('float32')
+        psfs.append(psf_stamp)
+      effective_psf = np.stack(psfs).min(axis=0)
+      effective_psf = gs.InterpolatedKImage(gs.ImageCD(effective_psf, scale=2*np.pi/(self.builder_config.stamp_size*0.03)))
+      effective_psf = gs.InterpolatedImage(gs.Image(effective_psf.drawImage(nx=self.builder_config.stamp_size,
+                                                                            ny=self.builder_config.stamp_size,scale=0.03), scale=0.03))
+      effective_psf = effective_psf.withFlux(1.)
+
     for i in range(ngal):
       gal = cat.makeGalaxy(i+offset)
-      cosmos_gal = gs.Convolve(gal, gal.original_psf)
+      if self.builder_config.effective_psf:
+        cosmos_gal = gs.Convolve(gal, effective_psf)
+      else:
+        cosmos_gal = gs.Convolve(gal, gal.original_psf)
       
       cosmos_stamp = cosmos_gal.drawImage(nx=self.builder_config.stamp_size, 
                                           ny=self.builder_config.stamp_size, 
