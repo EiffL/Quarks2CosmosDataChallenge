@@ -3,8 +3,16 @@ Material for the CMU Quarks2Cosmos Conference Data Challenges
 
 ## Challenge Outline
 
-This challenge is designed to be modular, so that you can follow one day and/or miss another day and still be able
-to make the most of a given day.
+This Data Challenge is designed to help you learn a number of concepts and tools and is structured around 2 concrete problems:
+- a "guided challenge" on solving inverse problems (inpainting, deconvolution, deblending) on HSC galaxy images
+- an "open challenge" on solving a Dark Matter Mass-Mapping problem from real HSC weak gravitational lensing data.
+
+Participants may choose to primarily follow the guided challenge where answers will be povided at the end of each day, 
+and/or dive a little bit deeper into the open challenge where no answer exist :-) and where they can apply some of the 
+methodology they have learned in the guided challenge.
+
+The schedule of the challenge is designed to be modular, so that you can follow one day and/or miss another day and 
+still be able to make the most of a given day, solutions will be provided for the guided challenge at the end of each day.
 
 ### Day I: Differentiable Forward Models
 
