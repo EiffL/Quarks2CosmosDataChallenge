@@ -64,7 +64,7 @@ class HSC(tfds.core.GeneratorBasedBuilder):
     # Load the catalog
     catalog = Table.read(catalog_filename)
 
-    with h5py.File("cutouts_pdr2_wide_coadd.hdf",'r') as cutouts, h5py.File("psfs_pdr2_wide_coadd.hdf",'r') as psfs:
+    with h5py.File(cutouts_filename,'r') as cutouts, h5py.File(psfs_filename,'r') as psfs:
         # Loop through the examples, resize cutout to desired size
         for row in catalog:
             try:
