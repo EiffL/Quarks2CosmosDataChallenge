@@ -4,7 +4,7 @@ Material for the CMU Quarks2Cosmos Conference Data Challenges
 ## Challenge Outline
 
 This Data Challenge is designed to help you learn a number of concepts and tools and is structured around 2 concrete problems:
-- a "guided challenge" on solving inverse problems (inpainting, deconvolution, deblending) on HSC galaxy images
+- a ["guided challenge"](notebooks/PartI-DifferentiableForwardModel.ipynb) on solving inverse problems (inpainting, deconvolution, deblending) on HSC galaxy images
 - an ["open challenge"](notebooks/MappingDarkMatterDataChallenge.ipynb) on solving a Dark Matter Mass-Mapping problem from real HSC weak gravitational lensing data.
 
 Participants may choose to primarily follow the guided challenge where answers will be povided at the end of each day, 
