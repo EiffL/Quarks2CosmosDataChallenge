@@ -51,3 +51,24 @@ Challenge Goals:
 
 Day IV is dedicated to extra hacking time and producing some nice plots for the presentation on Day V.
 Participants can use this time to work on the Mass-Mapping open challenge, continue to explore the galaxy image problem, and/or ask more questions!
+
+## How to get setup at PSC on Bridges 2
+
+We will primarily work on the OnDemand interface, to set up your python environment do the following from a command line on a GPU node. **Warning**: This assumes you have a fresh account at PSC, if not the case, ask challenge organizers to check it won't ruin your setup.
+```bash
+$ module load AI cuda
+$ pip install --upgrade pip
+$ pip install --upgrade "jax[cuda111]" -f https://storage.googleapis.com/jax-releases/jax_releases.html
+$ pip install --upgrade tensorflow
+```
+Then clone this repo and install the package and dependencies:
+```bash
+$ git clone https://github.com/EiffL/Quarks2CosmosDataChallenge.git
+$ cd Quarks2CosmosDataChallenge
+$ pip install --user -e .
+```
+Finally, add links to the data already available at PSC. From your `Quarks2CosmosDataChallenge` folder:
+```bash
+$ ln -s /ocean/projects/cis210053p/shared/deep_inverse data
+$ ln -s /ocean/projects/cis210053p/shared/deep_inverse/tensorflow_datasets ~/
+```
