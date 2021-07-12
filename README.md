@@ -72,3 +72,10 @@ Finally, add links to the data already available at PSC. From your `Quarks2Cosmo
 $ ln -s /ocean/projects/cis210053p/shared/deep_inverse data
 $ ln -s /ocean/projects/cis210053p/shared/deep_inverse/tensorflow_datasets ~/
 ```
+
+To make your newly installed environment accessible from OnDemand jupyter use this  final touch:
+```
+$ mkdir -p ~/.local/share/jupyter/kernels/
+$ cp -r /ocean/projects/cis210053p/shared/common/python3-AI ~/.local/share/jupyter/kernels/
+```
+You should now have access to the `Python3  - AI` kernel in jupyter.
