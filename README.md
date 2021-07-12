@@ -5,7 +5,7 @@ Material for the CMU Quarks2Cosmos Conference Data Challenges
 
 This Data Challenge is designed to help you learn a number of concepts and tools and is structured around 2 concrete problems:
 - a "guided challenge" on solving inverse problems (inpainting, deconvolution, deblending) on HSC galaxy images
-- an "open challenge" on solving a Dark Matter Mass-Mapping problem from real HSC weak gravitational lensing data.
+- an ["open challenge"](notebooks/MappingDarkMatterDataChallenge.ipynb) on solving a Dark Matter Mass-Mapping problem from real HSC weak gravitational lensing data.
 
 Participants may choose to primarily follow the guided challenge where answers will be povided at the end of each day, 
 and/or dive a little bit deeper into the open challenge where no answer exist :-) and where they can apply some of the 
@@ -16,13 +16,14 @@ still be able to make the most of a given day, solutions will be provided for th
 
 ### Day I: Differentiable Forward Models
 
+- [Notebook](notebooks/PartI-DifferentiableForwardModel.ipynb)
+
 Learning objectives:
 - How to write a probabilistic forward model for galaxy images with Jax + TensorFlow Probability
-- How to perform inference over a Jax model
-- Bonus: Perform inference by Wiener filtering
+- How to optimize parameters of a Jax model
 
 Challenge Goals:
-- Solve the inverse problem using a parametric galaxy model
+- Write a forward model of ground-based galaxy images
 
 ### Day II: Learning a prior with Generative Models
 
