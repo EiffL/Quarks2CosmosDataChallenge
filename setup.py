@@ -6,5 +6,6 @@ setup(
     author='EiffL',
     description='Utilities for data challenge',
     packages=find_packages(),    
-    install_requires=['numpy >= 1.11.1'],
+    install_requires=['dm-haiku', 'lenspack', 'galsim', 'jax-cosmo', 'tensorflow-probability', 
+                      'tensorflow-datasets']
 )
