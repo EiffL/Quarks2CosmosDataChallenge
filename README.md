@@ -27,6 +27,8 @@ Challenge Goals:
 
 ### Day II: Learning a prior with Generative Models
 
+- [Notebook](notebooks/PartII-GenerativeModels.ipynb)
+
 Learning objectives:
 - Write an Auto-Encoder in Jax+Haiku
 - Build a Normalizing Flow in Jax+Haiku+TensorFlow Probability
