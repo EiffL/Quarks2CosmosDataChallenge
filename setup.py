@@ -7,5 +7,5 @@ setup(
     description='Utilities for data challenge',
     packages=find_packages(),    
     install_requires=['dm-haiku', 'lenspack', 'galsim', 'jax-cosmo', 'tensorflow-probability', 
-                      'tensorflow-datasets', 'optax']
+                      'tensorflow-datasets', 'optax', 'flax']
 )
