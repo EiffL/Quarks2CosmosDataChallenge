@@ -1,6 +1,7 @@
 import jax
 import jax.numpy as jnp
 import haiku as hk
+import numpy as onp
 from quarks2cosmos.models.convdae import BlockGroup
 from tensorflow_probability.substrates import jax as tfp
 tfd = tfp.distributions
@@ -123,7 +124,7 @@ class Decoder(hk.Module):
     net = net.reshape([-1,3,3,32])
     
     strides = (1, 2, 2, 2, 2)
-    for i in jnp.arange(5)[::-1]:
+    for i in onp.arange(5)[::-1]:
       net = BlockGroup(channels=self.channels_per_group[i],
                      num_blocks=self.blocks_per_group[i],
                      stride=strides[i],
