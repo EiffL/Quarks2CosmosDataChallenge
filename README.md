@@ -39,6 +39,8 @@ Challenge Goals:
 
 ### Day III: Bringing it all together
 
+- [Notebook](notebooks/PartIII-VariationalInference.ipynb)
+
 Learning objectives:
 - Solve inverse problem by MAP
 - Learn how to sample from the posterior using Variational Inference
