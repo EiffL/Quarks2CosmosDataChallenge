@@ -143,5 +143,5 @@ class Decoder(hk.Module):
     # Adding padding to recover 101x101 shape
     net = net[...,0]
     net = jnp.pad(net,[[0,0],[3,2],[3,2]])
-    return tfd.Independent(tfd.MultivariateNormalDiag(net, scale_identity_multiplier=1.),
+    return tfd.Independent(tfd.MultivariateNormalDiag(net),
                            reinterpreted_batch_ndims=1)
